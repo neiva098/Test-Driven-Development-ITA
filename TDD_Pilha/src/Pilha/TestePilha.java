@@ -2,14 +2,19 @@ package Pilha;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-class TestePilha {
+public class TestePilha {
+	private static Pilha p;
 
+	@Before
+	public void inicializaPilha() {
+		p = new Pilha(10);
+	}
+	
 	@Test
 	public void pilhaVazia() {
-		Pilha p = new Pilha();
-        
         assertTrue(p.estaVazia());
         
         assertEquals(0, p.tamanho());
@@ -17,8 +22,6 @@ class TestePilha {
 	
 	@Test
 	public void empilhaUmElemento() {
-		Pilha p = new Pilha();
-        
 		p.empilha("primeiro");
 		
         assertFalse(p.estaVazia());
@@ -30,8 +33,6 @@ class TestePilha {
 	
 	@Test
 	public void empilhaEDesempilha() {
-		Pilha p = new Pilha();
-        
 		p.empilha("primeiro");
 		p.empilha("segundo");
 		
@@ -45,5 +46,24 @@ class TestePilha {
         assertEquals(1, p.tamanho());
         assertEquals("primeiro", p.topo());
         assertEquals("segundo", desempilhado);
+	}
+	
+	@Test(expected=PilhaVaziaException.class)
+	public void removeDaPilhaVazia() {
+		p.desempilha();
+	}
+	
+	@Test
+	public void adicionaNaPilhaCheia() {
+		for(int i = 0; i < 10; i++) {
+			p.empilha("elemento" + i);
+		}
+		
+		try {
+			p.empilha("Kabum");
+			fail();
+		} catch(PilhaCheiaException e) {
+			
+		}
 	}
 }
